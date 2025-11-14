@@ -1,0 +1,35 @@
+{
+  "name": "@roku/widget-sdk",
+  "version": "1.0.0",
+  "description": "Lightweight SDK for building App Manager widgets",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-redclover:redclover-appmanager/widget-sdk.git"
+  },
+  "keywords": [
+    "widget",
+    "sdk",
+    "appmanager"
+  ],
+  "author": "Red Clover",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^12.3.0",
+    "rollup": "^2.79.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
+  }
+}
