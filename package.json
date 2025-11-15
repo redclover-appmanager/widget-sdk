@@ -1,5 +1,5 @@
 {
-  "name": "@koru/widget-sdk",
+  "name": "@redclover/koru-sdk",
   "version": "1.0.0",
   "description": "Lightweight SDK for building Koru widgets with TypeScript support, smart caching, and lifecycle management",
   "main": "dist/index.js",

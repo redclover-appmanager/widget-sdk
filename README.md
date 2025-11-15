@@ -1,7 +1,7 @@
 # Koru Widget SDK
 
-[![npm version](https://img.shields.io/npm/v/@koru/widget-sdk.svg)](https://www.npmjs.com/package/@koru/widget-sdk)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@koru/widget-sdk)](https://bundlephobia.com/package/@koru/widget-sdk)
+[![npm version](https://img.shields.io/npm/v/@redclover/koru-sdk.svg)](https://www.npmjs.com/package/@redclover/koru-sdk)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@redclover/koru-sdk)](https://bundlephobia.com/package/@redclover/koru-sdk)
 
 Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate with the Koru platform. Handles authorization, caching, error handling, and lifecycle management out of the box.
 
@@ -38,13 +38,13 @@ Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate wi
 ## Installation
 
 ```bash
-npm install @koru/widget-sdk
+npm install @redclover/koru-sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { KoruWidget } from '@koru/widget-sdk';
+import { KoruWidget } from '@redclover/koru-sdk';
 
 class MyWidget extends KoruWidget {
   constructor() {
@@ -374,7 +374,7 @@ import {
   AuthResponse,
   WidgetOptions,
   CreateElementProps
-} from '@koru/widget-sdk';
+} from '@redclover/koru-sdk';
 
 class TypedWidget extends KoruWidget {
   private myData: string[] = [];
@@ -487,7 +487,7 @@ npm run dev
 ```bash
 npm link
 # In your widget project:
-npm link @koru/widget-sdk
+npm link @redclover/koru-sdk
 ```
 
 ## Publishing
@@ -587,7 +587,7 @@ super({
    ```
 2. Check that types are properly imported:
    ```typescript
-   import { KoruWidget, WidgetConfig } from '@koru/widget-sdk';
+   import { KoruWidget, WidgetConfig } from '@redclover/koru-sdk';
    ```
 3. Enable strict mode in `tsconfig.json` for better type safety
 
