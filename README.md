@@ -1,9 +1,28 @@
-# App Manager Widget SDK
+# Koru Widget SDK
 
-[![npm version](https://img.shields.io/npm/v/@roku/widget-sdk.svg)](https://www.npmjs.com/package/@roku/widget-sdk)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@roku/widget-sdk)](https://bundlephobia.com/package/@roku/widget-sdk)
+[![npm version](https://img.shields.io/npm/v/@koru/widget-sdk.svg)](https://www.npmjs.com/package/@koru/widget-sdk)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@koru/widget-sdk)](https://bundlephobia.com/package/@koru/widget-sdk)
 
-Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate with the App Manager platform. Handles authorization, caching, error handling, and lifecycle management out of the box.
+Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate with the Koru platform. Handles authorization, caching, error handling, and lifecycle management out of the box.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [HTML Integration](#html-integration)
+- [API Reference](#api-reference)
+  - [Constructor Options](#constructor-options)
+  - [Lifecycle Hooks](#lifecycle-hooks)
+  - [Helper Methods](#helper-methods)
+  - [Public Methods](#public-methods)
+  - [Protected Properties](#protected-properties)
+- [Advanced Examples](#advanced-examples)
+- [TypeScript Support](#typescript)
+- [IDE Setup](#ide-setup)
+- [Development](#development)
+- [Troubleshooting](#troubleshooting)
+- [Best Practices](#best-practices)
 
 ## Features
 
@@ -19,15 +38,15 @@ Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate wi
 ## Installation
 
 ```bash
-npm install @roku/widget-sdk
+npm install @koru/widget-sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { AppManagerWidget } from '@roku/widget-sdk';
+import { KoruWidget } from '@koru/widget-sdk';
 
-class MyWidget extends AppManagerWidget {
+class MyWidget extends KoruWidget {
   constructor() {
     super({ name: 'my-widget', version: '1.0.0' });
   }
@@ -80,7 +99,7 @@ Add the widget script tag with required data attributes:
 ### Constructor Options
 
 ```typescript
-class MyWidget extends AppManagerWidget {
+class MyWidget extends KoruWidget {
   constructor() {
     super({ 
       name: 'widget-name',        // Required: Widget identifier
@@ -110,7 +129,7 @@ class MyWidget extends AppManagerWidget {
 **Example:**
 
 ```typescript
-class MyWidget extends AppManagerWidget {
+class MyWidget extends KoruWidget {
   async onInit(config) {
     // Setup event listeners, fetch data, etc.
     this.data = await this.fetchData(config.apiUrl);
@@ -207,7 +226,7 @@ this.container   // Main container element (set in onRender)
 ### State Management
 
 ```typescript
-class StatefulWidget extends AppManagerWidget {
+class StatefulWidget extends KoruWidget {
   private state = {
     count: 0,
     items: []
@@ -243,7 +262,7 @@ class StatefulWidget extends AppManagerWidget {
 ### Complex UI
 
 ```typescript
-class ComplexWidget extends AppManagerWidget {
+class ComplexWidget extends KoruWidget {
   async onRender(config) {
     const header = this.createElement('header', {
       className: 'widget-header',
@@ -280,7 +299,7 @@ class ComplexWidget extends AppManagerWidget {
 ### Error Handling
 
 ```typescript
-class SafeWidget extends AppManagerWidget {
+class SafeWidget extends KoruWidget {
   async onRender(config) {
     try {
       this.renderContent(config);
@@ -303,7 +322,7 @@ class SafeWidget extends AppManagerWidget {
 ### Proper Cleanup
 
 ```typescript
-class CleanWidget extends AppManagerWidget {
+class CleanWidget extends KoruWidget {
   private timers: number[] = [];
   private listeners: Array<{
     element: HTMLElement;
@@ -350,28 +369,98 @@ Full TypeScript support with included type definitions:
 
 ```typescript
 import { 
-  AppManagerWidget,
+  KoruWidget,
   WidgetConfig,
   AuthResponse,
-  WidgetOptions 
-} from '@roku/widget-sdk';
+  WidgetOptions,
+  CreateElementProps
+} from '@koru/widget-sdk';
 
-class TypedWidget extends AppManagerWidget {
+class TypedWidget extends KoruWidget {
   private myData: string[] = [];
+  private container!: HTMLDivElement;
 
   async onInit(config: WidgetConfig) {
+    // Type-safe config access
     this.myData = config.items as string[];
   }
 
   async onRender(config: WidgetConfig) {
-    // Fully typed
+    // Full type inference for createElement
+    this.container = this.createElement('div', {
+      className: 'typed-widget',
+      style: { padding: '20px' },
+      children: [
+        this.createElement('h1', { 
+          children: [config.title as string] 
+        })
+      ]
+    });
+    document.body.appendChild(this.container);
   }
 
   async onDestroy(): Promise<void> {
-    // Fully typed
+    this.container?.remove();
   }
 }
 ```
+
+### Type Definitions
+
+The SDK exports the following types for enhanced IDE support:
+
+- **`KoruWidget`** - Abstract base class for widgets
+- **`WidgetConfig`** - Configuration object from Koru
+- **`AuthResponse`** - Full authorization response with metadata
+- **`WidgetOptions`** - Constructor options for widget configuration
+- **`CreateElementProps<K>`** - Generic props for createElement helper
+
+## IDE Setup
+
+### VS Code
+
+For optimal development experience in VS Code:
+
+1. **Install recommended extensions:**
+   - ESLint
+   - TypeScript and JavaScript Language Features (built-in)
+   - IntelliCode
+
+2. **Enable IntelliSense:**
+   The SDK includes full JSDoc comments and TypeScript definitions. IntelliSense will automatically show:
+   - Method signatures and descriptions
+   - Parameter types and documentation
+   - Return types
+   - Usage examples
+
+3. **Type checking:**
+   ```json
+   // Add to your tsconfig.json
+   {
+     "compilerOptions": {
+       "strict": true,
+       "noImplicitAny": true,
+       "strictNullChecks": true
+     }
+   }
+   ```
+
+### WebStorm / IntelliJ IDEA
+
+WebStorm provides excellent TypeScript support out of the box:
+
+1. TypeScript definitions are automatically recognized
+2. JSDoc comments appear in quick documentation (Ctrl+Q / Cmd+J)
+3. Parameter hints show inline while typing
+
+### Auto-completion Features
+
+The SDK provides rich autocomplete for:
+
+- **Lifecycle hooks** - Shows required and optional hooks with documentation
+- **Helper methods** - `createElement`, `isMobile`, `track`, `log` with examples
+- **Configuration options** - All constructor options with defaults
+- **Element creation** - Type-safe HTML element creation with proper props
 
 ## Development
 
@@ -398,7 +487,7 @@ npm run dev
 ```bash
 npm link
 # In your widget project:
-npm link @roku/widget-sdk
+npm link @koru/widget-sdk
 ```
 
 ## Publishing
@@ -427,24 +516,223 @@ Requires ES2015+ support, fetch API, and localStorage.
 
 ### Widget Not Loading
 
-1. Verify all data attributes are present on the script tag
+**Symptoms:** Widget doesn't appear on the page
+
+**Solutions:**
+1. Verify all data attributes are present on the script tag:
+   ```html
+   <script 
+     src="your-widget.js"
+     data-website-id="your-website-id"
+     data-app-id="your-app-id"
+     data-app-manager-url="https://app-manager.example.com"
+   ></script>
+   ```
 2. Check that `data-app-manager-url` is correct and accessible
-3. Enable debug mode: `options: { debug: true }`
+3. Enable debug mode to see detailed logs:
+   ```typescript
+   super({ name: 'my-widget', version: '1.0.0', options: { debug: true } });
+   ```
 4. Check browser console for errors
+5. Verify the script is loading (check Network tab)
 
 ### Authorization Failing
 
+**Symptoms:** Widget loads but doesn't render, console shows authorization errors
+
+**Solutions:**
 1. Verify `data-website-id` and `data-app-id` are correct
-2. Ensure the widget is authorized in App Manager
-3. Check network tab for failed API requests
-4. Try clearing cache: `widget.reload()`
+2. Ensure the widget is authorized in Koru dashboard
+3. Check network tab for failed API requests (look for 401/403 errors)
+4. Verify the Koru URL is accessible from the browser
+5. Try clearing cache and reloading:
+   ```typescript
+   const widget = new MyWidget();
+   await widget.reload();
+   ```
 
 ### Cache Issues
 
+**Symptoms:** Widget shows old data after configuration changes
+
+**Solutions:**
 ```typescript
-// Clear cache and reload
+// Option 1: Reload widget (clears cache automatically)
 const widget = new MyWidget();
 await widget.reload();
+
+// Option 2: Disable caching during development
+super({ 
+  name: 'my-widget', 
+  version: '1.0.0',
+  options: { cache: false }
+});
+
+// Option 3: Reduce cache duration
+super({ 
+  name: 'my-widget', 
+  version: '1.0.0',
+  options: { cacheDuration: 60 } // 1 minute
+});
+```
+
+### TypeScript Errors
+
+**Symptoms:** Type errors in IDE or during build
+
+**Solutions:**
+1. Ensure TypeScript version is 4.0 or higher:
+   ```bash
+   npm install -D typescript@latest
+   ```
+2. Check that types are properly imported:
+   ```typescript
+   import { KoruWidget, WidgetConfig } from '@koru/widget-sdk';
+   ```
+3. Enable strict mode in `tsconfig.json` for better type safety
+
+### CORS Errors
+
+**Symptoms:** Network requests fail with CORS errors
+
+**Solutions:**
+1. Verify Koru is configured to allow requests from your domain
+2. Check that the `data-app-manager-url` uses the correct protocol (https)
+3. Contact Koru administrator to whitelist your domain
+
+### Memory Leaks
+
+**Symptoms:** Page becomes slow over time, high memory usage
+
+**Solutions:**
+1. Ensure proper cleanup in `onDestroy`:
+   ```typescript
+   async onDestroy() {
+     // Remove event listeners
+     this.button?.removeEventListener('click', this.handleClick);
+     
+     // Clear timers
+     clearInterval(this.timer);
+     
+     // Remove DOM elements
+     this.container?.remove();
+   }
+   ```
+2. Avoid creating circular references
+3. Use WeakMap/WeakSet for object references when appropriate
+
+## Best Practices
+
+### 1. Always Clean Up Resources
+
+```typescript
+class BestPracticeWidget extends KoruWidget {
+  private timers: number[] = [];
+  private listeners: Map<HTMLElement, { event: string; handler: EventListener }> = new Map();
+
+  protected addListener(element: HTMLElement, event: string, handler: EventListener) {
+    element.addEventListener(event, handler);
+    this.listeners.set(element, { event, handler });
+  }
+
+  async onDestroy() {
+    // Clean up all listeners
+    this.listeners.forEach(({ event, handler }, element) => {
+      element.removeEventListener(event, handler);
+    });
+    this.listeners.clear();
+
+    // Clear all timers
+    this.timers.forEach(timer => clearInterval(timer));
+    this.timers = [];
+
+    // Remove DOM
+    this.container?.remove();
+  }
+}
+```
+
+### 2. Use Debug Mode During Development
+
+```typescript
+const isDev = process.env.NODE_ENV === 'development';
+
+super({
+  name: 'my-widget',
+  version: '1.0.0',
+  options: {
+    debug: isDev,
+    cache: !isDev, // Disable cache in development
+    analytics: !isDev // Disable analytics in development
+  }
+});
+```
+
+### 3. Type Your Configuration
+
+```typescript
+interface MyWidgetConfig extends WidgetConfig {
+  apiUrl: string;
+  title: string;
+  items: Array<{ id: string; name: string }>;
+}
+
+class MyWidget extends KoruWidget {
+  async onInit(config: WidgetConfig) {
+    const typedConfig = config as MyWidgetConfig;
+    // Now you have type safety
+    console.log(typedConfig.apiUrl);
+  }
+}
+```
+
+### 4. Handle Errors Gracefully
+
+```typescript
+class RobustWidget extends KoruWidget {
+  async onRender(config: WidgetConfig) {
+    try {
+      await this.renderContent(config);
+    } catch (error) {
+      this.log('Render error:', error);
+      this.renderErrorState();
+    }
+  }
+
+  private renderErrorState() {
+    this.container = this.createElement('div', {
+      className: 'widget-error',
+      style: { padding: '20px', color: 'red' },
+      children: ['Failed to load widget. Please refresh the page.']
+    });
+    document.body.appendChild(this.container);
+  }
+}
+```
+
+### 5. Optimize for Performance
+
+```typescript
+// Use onConfigUpdate for partial updates instead of full re-render
+async onConfigUpdate(config: WidgetConfig) {
+  // Only update changed elements
+  if (this.titleElement) {
+    this.titleElement.textContent = config.title as string;
+  }
+  // Much faster than destroying and re-rendering
+}
+
+// Debounce frequent operations
+private debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: number;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait) as unknown as number;
+  };
+}
 ```
 
 ## License
@@ -453,6 +741,17 @@ Copyright © Red Clover. All rights reserved.
 
 This software is proprietary and confidential. Unauthorized copying, distribution, modification, or use of this software, via any medium, is strictly prohibited.
 
+## Contributing
+
+This is a proprietary SDK. For bug reports or feature requests, please contact the Red Clover team.
+
+## Support
+
+For support, please reach out to:
+- **Email:** support@redclover.com
+- **Documentation:** [GitHub Repository](https://github.com/redclover-appmanager/widget-sdk)
+- **Issues:** [GitHub Issues](https://github.com/redclover-appmanager/widget-sdk/issues)
+
 ---
 
-**Built for App Manager** | [Documentation](https://github.com/redclover-appmanager/widget-sdk) | [Issues](https://github.com/redclover-appmanager/widget-sdk/issues)
+**Built for Koru** | [Documentation](https://github.com/redclover-appmanager/widget-sdk) | [Issues](https://github.com/redclover-appmanager/widget-sdk/issues)

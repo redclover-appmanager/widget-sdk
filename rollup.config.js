@@ -28,7 +28,7 @@ export default [
     output: {
       file: 'dist/widget-sdk.min.js',
       format: 'umd',
-      name: 'AppManagerWidgetSDK',
+      name: 'KoruWidgetSDK',
       sourcemap: true
     },
     plugins: [typescript(), terser()]

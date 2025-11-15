@@ -1,30 +1,60 @@
 {
-  "name": "@roku/widget-sdk",
+  "name": "@koru/widget-sdk",
   "version": "1.0.0",
-  "description": "Lightweight SDK for building App Manager widgets",
+  "description": "Lightweight SDK for building Koru widgets with TypeScript support, smart caching, and lifecycle management",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com-redclover:redclover-appmanager/widget-sdk.git"
   },
+  "bugs": {
+    "url": "https://github.com/redclover-appmanager/widget-sdk/issues"
+  },
+  "homepage": "https://github.com/redclover-appmanager/widget-sdk#readme",
   "keywords": [
     "widget",
     "sdk",
-    "appmanager"
+    "koru",
+    "typescript",
+    "javascript",
+    "frontend",
+    "ui",
+    "component",
+    "embed",
+    "integration"
   ],
-  "author": "Red Clover",
+  "author": {
+    "name": "Red Clover",
+    "email": "soporte@redclover.com.ar"
+  },
   "license": "UNLICENSED",
   "private": true,
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "sideEffects": false,
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.3.0",
     "rollup": "^2.79.2",
