@@ -275,6 +275,27 @@ export abstract class KoruWidget {
   // ==================== AUTHORIZATION ====================
 
   private async authorize(): Promise<AuthResponse> {
+    // Check for Koru preview mode first
+    if (typeof window !== 'undefined' && window.__KORU_PREVIEW_CONFIG__) {
+      this.log('Using Koru preview config');
+      return {
+        authorized: true,
+        config: window.__KORU_PREVIEW_CONFIG__ as WidgetConfig,
+        token: 'preview-mode',
+        app: {
+          id: this.appId,
+          name: 'Preview Mode',
+          description: 'Widget running in Koru preview mode'
+        },
+        website: {
+          id: this.websiteId,
+          url: window.location.origin,
+          is_ecommerce: false,
+          customer: 'preview'
+        }
+      };
+    }
+
     if (this.options.cache) {
       const cached = this.getFromCache();
       if (cached) {

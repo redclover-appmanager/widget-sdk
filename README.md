@@ -11,6 +11,7 @@ Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate wi
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [HTML Integration](#html-integration)
+- [Preview Mode](#preview-mode)
 - [API Reference](#api-reference)
   - [Constructor Options](#constructor-options)
   - [Lifecycle Hooks](#lifecycle-hooks)
@@ -34,6 +35,7 @@ Lightweight JavaScript SDK (~2KB gzipped) for building widgets that integrate wi
 - 📊 **Analytics Ready** - Built-in event tracking
 - 📱 **Mobile Detection** - Responsive widget helpers
 - 🎯 **TypeScript** - Full type definitions included
+- 👁️ **Preview Mode** - Live preview support for Koru platform
 
 ## Installation
 
@@ -93,6 +95,43 @@ Add the widget script tag with required data attributes:
   data-app-manager-url="https://app-manager.example.com"
 ></script>
 ```
+
+## Preview Mode
+
+The SDK automatically supports Koru's live preview feature. When `window.__KORU_PREVIEW_CONFIG__` is present, the widget uses it directly instead of making API authorization calls.
+
+**How it works:**
+
+1. Koru platform sets preview configuration on the window object
+2. SDK detects the preview config during initialization
+3. Widget uses preview config instead of fetching from API
+4. No code changes needed - it's automatic!
+
+**Example preview setup:**
+
+```html
+<script>
+  // Koru platform injects this before loading your widget
+  window.__KORU_PREVIEW_CONFIG__ = {
+    title: "Preview Widget",
+    apiUrl: "https://api.example.com",
+    items: [
+      { id: "1", name: "Preview Item 1" },
+      { id: "2", name: "Preview Item 2" }
+    ]
+  };
+</script>
+<script src="your-widget.js" data-website-id="..." data-app-id="..." data-app-manager-url="..."></script>
+```
+
+**Debug logging:**
+
+When preview mode is active and debug is enabled, you'll see:
+```
+[my-widget] Using Koru preview config
+```
+
+This allows Koru to provide instant visual feedback when configuring widgets, without requiring full authorization flow.
 
 ## API Reference
 

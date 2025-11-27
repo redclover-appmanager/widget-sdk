@@ -1,4 +1,15 @@
 /**
+ * Global Window interface extension for Koru preview mode.
+ * When __KORU_PREVIEW_CONFIG__ is present, the SDK uses it directly
+ * instead of fetching configuration from the API.
+ */
+declare global {
+  interface Window {
+    __KORU_PREVIEW_CONFIG__?: Record<string, unknown>;
+  }
+}
+
+/**
  * Configuration object passed to widget lifecycle hooks.
  * Contains custom configuration data from the Koru platform.
  * 
