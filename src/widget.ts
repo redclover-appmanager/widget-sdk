@@ -40,7 +40,7 @@ export abstract class KoruWidget {
   protected authData: AuthResponse | null = null;
   /** Main container element for the widget (typically set in onRender) */
   protected container: HTMLElement | null = null;
-  
+
   private websiteId: string;
   private appId: string;
   private koruUrl: string;
@@ -74,7 +74,7 @@ export abstract class KoruWidget {
   constructor(widgetOptions: WidgetOptions) {
     this.widgetName = widgetOptions.name;
     this.widgetVersion = widgetOptions.version;
-    
+
     // Default options
     this.options = {
       cache: true,
@@ -180,7 +180,7 @@ export abstract class KoruWidget {
     try {
       this.clearCache();
       this.authData = await this.authorize();
-      
+
       if (!this.authData.authorized) return;
 
       const newConfig = this.authData.config;
@@ -305,12 +305,12 @@ export abstract class KoruWidget {
     }
 
     let lastError: Error | null = null;
-    
+
     for (let attempt = 1; attempt <= this.options.retryAttempts; attempt++) {
       try {
         this.log(`Authorization attempt ${attempt}/${this.options.retryAttempts}`);
-        
-        const url = `${this.koruUrl}/api/widget/authorize?website_id=${this.websiteId}&app_id=${this.appId}`;
+
+        const url = `${this.koruUrl}/api/auth/widget?website_id=${this.websiteId}&app_id=${this.appId}`;
         const response = await fetch(url, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -444,8 +444,8 @@ export abstract class KoruWidget {
     if (!this.options.analytics) return;
 
     try {
-      const url = `${this.koruUrl}/api/widget/analytics`;
-      
+      const url = `${this.koruUrl}/api/analytics`;
+
       fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -486,7 +486,7 @@ export abstract class KoruWidget {
 
   private handleError(message: string, error: unknown): void {
     console.error(`[${this.widgetName}] ${message}:`, error);
-    
+
     if (this.options.analytics) {
       this.track('widget_error', {
         error: error instanceof Error ? error.message : String(error),
@@ -521,7 +521,7 @@ export abstract class KoruWidget {
     try {
       const key = this.getCacheKey();
       const cached = localStorage.getItem(key);
-      
+
       if (!cached) return null;
 
       const { data, timestamp } = JSON.parse(cached);
