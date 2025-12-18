@@ -93,6 +93,7 @@ Add the widget script tag with required data attributes:
   data-website-id="your-website-id"
   data-app-id="your-app-id"
   data-app-manager-url="https://app-manager.example.com"
+  data-custom-data="optional-custom-context"
 ></script>
 ```
 
@@ -233,6 +234,9 @@ this.track('button_clicked', {
   timestamp: Date.now()
 });
 ```
+
+> [!NOTE]
+> The `track` method automatically includes `custom_data` (extracted from the script tag) in the event payload, allowing you to segment analytics by your custom context.
 
 #### `log(message, ...args)`
 
