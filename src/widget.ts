@@ -46,6 +46,7 @@ export abstract class KoruWidget {
   private koruUrl: string;
   private widgetName: string;
   private widgetVersion: string;
+  private customData: string;
   private options: Required<NonNullable<WidgetOptions['options']>>;
   private isInitialized = false;
 
@@ -95,6 +96,7 @@ export abstract class KoruWidget {
     this.websiteId = script.getAttribute('data-website-id') || '';
     this.appId = script.getAttribute('data-app-id') || '';
     this.koruUrl = script.getAttribute('data-app-manager-url') || '';
+    this.customData = script.getAttribute('data-custom-data') || '';
 
     if (!this.websiteId || !this.appId || !this.koruUrl) {
       throw new Error('[Widget SDK] Missing required data attributes');
@@ -310,7 +312,12 @@ export abstract class KoruWidget {
       try {
         this.log(`Authorization attempt ${attempt}/${this.options.retryAttempts}`);
 
-        const url = `${this.koruUrl}/api/auth/widget?website_id=${this.websiteId}&app_id=${this.appId}`;
+        let url = `${this.koruUrl}/api/auth/widget?website_id=${this.websiteId}&app_id=${this.appId}`;
+
+        if (this.customData) {
+          url += `&custom_data=${encodeURIComponent(this.customData)}`;
+        }
+
         const response = await fetch(url, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -456,6 +463,7 @@ export abstract class KoruWidget {
           event_data: {
             widget: this.widgetName,
             version: this.widgetVersion,
+            custom_data: this.customData,
             ...eventData
           }
         })

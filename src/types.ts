@@ -56,6 +56,8 @@ export interface AuthResponse {
     /** Customer identifier */
     customer: string;
   };
+  /** Optional custom data passed from the embed code */
+  custom_data?: string;
 }
 
 /**
